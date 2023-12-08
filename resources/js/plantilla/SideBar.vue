@@ -8,7 +8,7 @@
             class="brand-link bg-primary"
         >
             <img
-                :src="url_principal + '/logo.png'"
+                :src="logo"
                 alt="Logo"
                 class="brand-image img-circle elevation-3"
                 style="opacity: 0.8"
@@ -23,40 +23,19 @@
         <div class="sidebar p-0">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <!-- <div class="image">
+                <div class="image">
                     <img
                         :src="user_sidebar.path_image"
                         class="img-circle elevation-2"
                         alt="User Image"
                     />
-                </div> -->
-                <div class="info">
-                    <router-link
-                        exact
-                        :to="{
-                            name: 'usuarios.perfil',
-                            params: { id: user_sidebar.id },
-                        }"
-                        class="d-block"
-                        v-text="user_sidebar.full_name"
-                    ></router-link>
                 </div>
-            </div>
-
-            <!-- SidebarSearch Form -->
-            <div class="form-inline pl-1 pr-1">
-                <div class="input-group" data-widget="sidebar-search">
-                    <input
-                        class="form-control form-control-sidebar bg-white"
-                        type="search"
-                        placeholder="Buscar Modulo"
-                        aria-label="Search"
-                    />
-                    <div class="input-group-append">
-                        <button class="btn btn-sidebar bg-white">
-                            <i class="fas fa-search fa-fw"></i>
-                        </button>
-                    </div>
+                <div class="info">
+                    <a
+                        href=""
+                        class="d-block"
+                        v-text="user_sidebar.usuario"
+                    ></a>
                 </div>
             </div>
 
@@ -81,7 +60,11 @@
                     </li>
                     <li
                         class="nav-header bg-navy"
-                        v-if="permisos.includes('users.index')"
+                        v-if="
+                            permisos.includes('usuarios.index') ||
+                            permisos.includes('tarifarios.index') ||
+                            permisos.includes('ingreso_salidas.index')
+                        "
                     >
                         ADMINISTRACIÓN
                     </li>
@@ -100,10 +83,62 @@
                         </router-link>
                     </li>
                     <li
+                        class="nav-item"
+                        v-if="permisos.includes('tarifarios.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'tarifarios.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Tarifario</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('ingreso_salidas.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'ingreso_salidas.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Ingresos y Salidas</p>
+                        </router-link>
+                    </li>
+                    <li
                         class="nav-header bg-navy"
                         v-if="permisos.includes('reportes.usuarios')"
                     >
                         REPORTES
+                    </li>
+                    <!-- <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Lista de Usuarios</p>
+                        </router-link>
+                    </li> -->
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Espacios disponibles y ocupados</p>
+                        </router-link>
                     </li>
                     <li
                         class="nav-item"
@@ -114,7 +149,7 @@
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
-                            <p>Lista de Usuarios</p>
+                            <p>Ingresos y tiempo por espacios ocupados</p>
                         </router-link>
                     </li>
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>
@@ -146,6 +181,7 @@ export default {
             fullscreenLoading: false,
             permisos: localStorage.getItem("permisos"),
             timeoutId: null,
+            logo: url_logo,
         };
     },
     mounted() {

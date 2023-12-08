@@ -10,7 +10,7 @@
     <style>
         #app {
             background-color: none;
-            background-image: url("/imgs/login.jpg");
+            background-image: url("/imgs/login.webp");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -30,6 +30,10 @@
             </Auth>
         @endif
     </div>
+    <script>
+        var main_url = "{{ url('') }}";
+        var url_logo = "{{ asset('imgs/logo.png') }}";
+    </script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/plantilla.js') }}"></script>
     <script>

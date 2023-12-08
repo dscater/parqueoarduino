@@ -78,19 +78,13 @@
 
 <script>
 export default {
-    props: {
-        logo: {
-            String,
-            default:
-                "https://www.logodesign.net/logo/eye-and-house-5806ld.png?size=2&industry=All",
-        },
-    },
     data() {
         return {
             usuario: "",
             password: "",
             error: false,
             fullscreenLoading: false,
+            logo: url_logo,
         };
     },
     methods: {

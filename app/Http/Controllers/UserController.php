@@ -10,33 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public $validacion = [
-        'nombre' => 'required|min:4',
-        'paterno' => 'required|min:4',
-        'ci' => 'required|numeric|digits_between:4, 20|unique:users,ci',
-        'ci_exp' => 'required',
-        'tipo' => 'required',
-        'fono' => 'required',
-        'dir' => 'required',
-    ];
+    public $validacion = [];
 
     public $mensajes = [
-        'nombre.required' => 'Este campo es obligatorio',
-        'nombre.min' => 'Debes ingressar al menos 4 carácteres',
-        'paterno.required' => 'Este campo es obligatorio',
-        'paterno.min' => 'Debes ingresar al menos 4 carácteres',
-        'ci.required' => 'Este campo es obligatorio',
-        'ci.numeric' => 'Debes ingresar un valor númerico',
-        'ci.unique' => 'Este número de C.I. ya fue registrado',
-        'ci_exp.required' => 'Este campo es obligatorio',
-        'dir.required' => 'Este campo es obligatorio',
-        'dir.min' => 'Debes ingresar al menos 4 carácteres',
-        'fono.required' => 'Este campo es obligatorio',
-        'fono.min' => 'Debes ingresar al menos 4 carácteres',
-        'cel.required' => 'Este campo es obligatorio',
-        'cel.min' => 'Debes ingresar al menos 4 carácteres',
-        'tipo.required' => 'Este campo es obligatorio',
-        'correo' => 'nullable|email|unique:users,correo',
+        'usuario.required' => 'Este campo es obligatorio',
+        'usuario.min' => 'Debes ingresar al menos 4 carácteres',
     ];
 
     public $permisos = [
@@ -46,27 +24,19 @@ class UserController extends Controller
             'usuarios.edit',
             'usuarios.destroy',
 
-            'notificacions.index',
-            'notificacions.create',
-            'notificacions.edit',
-            'notificacions.destroy',
-
-            'configuracion.index',
-            'configuracion.edit',
+            'tarifarios.index',
+            'tarifarios.create',
+            'tarifarios.edit',
+            'tarifarios.destroy',
+            
+            'ingreso_salidas.index',
+            'ingreso_salidas.create',
+            'ingreso_salidas.edit',
+            'ingreso_salidas.destroy',
 
             'reportes.usuarios',
-            'reportes.proteccion_personal',
-            'reportes.g_proteccion_personal',
         ],
-        "AUXILIAR" => [
-            'notificacions.index',
-            'notificacions.create',
-            'notificacions.edit',
-            'notificacions.destroy',
-            
-            'reportes.proteccion_personal',
-            'reportes.g_proteccion_personal',
-        ],
+        "OPERADOR" => [],
     ];
 
 
@@ -78,39 +48,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
-        }
-
+        $this->validacion["usuario"] = "required|min:4|unique:users,usuario";
+        $this->validacion["password"] = "required|min:6";
         $request->validate($this->validacion, $this->mensajes);
-        $cont = 0;
-        do {
-            $nombre_usuario = User::getNombreUsuario($request->nombre, $request->paterno);
-            if ($cont > 0) {
-                $nombre_usuario = $nombre_usuario . $cont;
-            }
-            $request['usuario'] = $nombre_usuario;
-            $cont++;
-        } while (User::where('usuario', $nombre_usuario)->get()->first());
-        $request['password'] = 'NoNulo';
-        $request['fecha_registro'] = date('Y-m-d');
-
         DB::beginTransaction();
+        $request["password"] = "123456";
         try {
             // crear el Usuario
-            $nuevo_usuario = User::create(array_map('mb_strtoupper', $request->except('foto')));
-            $nuevo_usuario->password = Hash::make($request->ci);
+            $nuevo_usuario = User::create(array_map('mb_strtoupper', $request->all()));
+            $nuevo_usuario->password = Hash::make($request->password);
             $nuevo_usuario->save();
-            $nuevo_usuario->foto = 'default.png';
-            if ($request->hasFile('foto')) {
-                $file = $request->foto;
-                $nom_foto = time() . '_' . $nuevo_usuario->usuario . '.' . $file->getClientOriginalExtension();
-                $nuevo_usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
-            }
-            $nuevo_usuario->correo = mb_strtolower($nuevo_usuario->correo);
-            $nuevo_usuario->save();
-
             DB::commit();
             return response()->JSON([
                 'sw' => true,
@@ -128,32 +75,20 @@ class UserController extends Controller
 
     public function update(Request $request, User $usuario)
     {
-        $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci,' . $usuario->id;
-        $this->validacion['correo'] = 'nullable|email|unique:users,correo,' . $usuario->id;
-        if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
+        $this->validacion["usuario"] = "required|min:4|unique:users,usuario," . $usuario->id;
+        if (isset($request->password) && trim($request->password) != "") {
+            $this->validacion["password"] = "required|min:6";
+        } else {
+            unset($request["password"]);
         }
         $request->validate($this->validacion, $this->mensajes);
         DB::beginTransaction();
         try {
-            $usuario->update(array_map('mb_strtoupper', $request->except('foto')));
-            if ($usuario->correo == "") {
-                $usuario->correo = NULL;
+            $usuario->update(array_map('mb_strtoupper', $request->all()));
+            if (isset($request->password) && trim($request->password) != "") {
+                $usuario->password = Hash::make($request->password);
+                $usuario->save();
             }
-
-            if ($request->hasFile('foto')) {
-                $antiguo = $usuario->foto;
-                if ($antiguo != 'default.png') {
-                    \File::delete(public_path() . '/imgs/users/' . $antiguo);
-                }
-                $file = $request->foto;
-                $nom_foto = time() . '_' . $usuario->usuario . '.' . $file->getClientOriginalExtension();
-                $usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
-            }
-            $usuario->correo = mb_strtolower($usuario->correo);
-            $usuario->save();
-
             DB::commit();
             return response()->JSON([
                 'sw' => true,
@@ -198,37 +133,6 @@ class UserController extends Controller
             return response()->JSON([
                 'sw' => true,
                 'msj' => 'La contraseña se actualizó correctamente'
-            ], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->JSON([
-                'sw' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function actualizaFoto(User $usuario, Request $request)
-    {
-        DB::beginTransaction();
-        try {
-
-            if ($request->hasFile('foto')) {
-                $antiguo = $usuario->foto;
-                if ($antiguo != 'default.png') {
-                    \File::delete(public_path() . '/imgs/users/' . $antiguo);
-                }
-                $file = $request->foto;
-                $nom_foto = time() . '_' . $usuario->usuario . '.' . $file->getClientOriginalExtension();
-                $usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
-            }
-            $usuario->save();
-            DB::commit();
-            return response()->JSON([
-                'sw' => true,
-                'usuario' => $usuario,
-                'msj' => 'Foto actualizada con éxito'
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

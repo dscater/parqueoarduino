@@ -56393,17 +56393,17 @@ input.form-control {
     cursor: not-allowed;
 }
 
-.notificacion{
+.notificacion {
     display: flex;
     align-items: center;
 }
 
-.notificacion.active{
+.notificacion.active {
     background-color: white;
     color: black;
 }
 
-.desc_notificacion{
+.desc_notificacion {
     max-width: 120px;
     overflow: hidden;
     white-space: nowrap;

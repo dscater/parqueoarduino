@@ -27,6 +27,22 @@ export default new Router({
                 .default,
         },
 
+        // tarifarios
+        {
+            path: "/tarifarios",
+            name: "tarifarios.index",
+            component: require("./components/modulos/tarifarios/index.vue")
+                .default,
+        },
+
+        // ingreso_salidas
+        {
+            path: "/ingreso_salidas",
+            name: "ingreso_salidas.index",
+            component: require("./components/modulos/ingreso_salidas/index.vue")
+                .default,
+        },
+
         // Reportes
         {
             path: "/reportes/usuarios",

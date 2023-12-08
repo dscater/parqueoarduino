@@ -84,91 +84,6 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(foto)="row">
-                                                    <b-avatar
-                                                        :src="
-                                                            row.item.path_image
-                                                        "
-                                                        size="3rem"
-                                                    ></b-avatar>
-                                                </template>
-
-                                                <template
-                                                    #cell(fecha_registro)="row"
-                                                >
-                                                    {{
-                                                        formatoFecha(
-                                                            row.item
-                                                                .fecha_registro
-                                                        )
-                                                    }}
-                                                </template>
-                                                <template #cell(mas)="row">
-                                                    <b-button
-                                                        variant="primary"
-                                                        size="sm"
-                                                        @click="
-                                                            row.toggleDetails
-                                                        "
-                                                    >
-                                                        {{
-                                                            row.detailsShowing
-                                                                ? "Ocultar"
-                                                                : "Mostrar"
-                                                        }}
-                                                        Detalles
-                                                    </b-button>
-                                                </template>
-
-                                                <template #row-details="row">
-                                                    <b-card>
-                                                        <b-row class="mb-2">
-                                                            <b-col
-                                                                sm="3"
-                                                                class="text-sm-right"
-                                                                ><b
-                                                                    >Dirección:</b
-                                                                ></b-col
-                                                            >
-                                                            <b-col>{{
-                                                                row.item.dir
-                                                            }}</b-col>
-                                                        </b-row>
-                                                        <b-row class="mb-2">
-                                                            <b-col
-                                                                sm="3"
-                                                                class="text-sm-right"
-                                                                ><b
-                                                                    >Correo:</b
-                                                                ></b-col
-                                                            >
-                                                            <b-col>{{
-                                                                row.item.correo
-                                                            }}</b-col>
-                                                        </b-row>
-                                                        <b-row class="mb-2">
-                                                            <b-col
-                                                                sm="3"
-                                                                class="text-sm-right"
-                                                                ><b
-                                                                    >Teléfono/Celular:</b
-                                                                ></b-col
-                                                            >
-                                                            <b-col>{{
-                                                                row.item.fono
-                                                            }}</b-col>
-                                                        </b-row>
-                                                        <b-button
-                                                            size="sm"
-                                                            variant="primary"
-                                                            @click="
-                                                                row.toggleDetails
-                                                            "
-                                                            >Ocultar</b-button
-                                                        >
-                                                    </b-card>
-                                                </template>
-
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-between"
@@ -199,7 +114,7 @@
                                                                 eliminaUsuario(
                                                                     row.item.id,
                                                                     row.item
-                                                                        .full_name
+                                                                        .usuario
                                                                 )
                                                             "
                                                         >
@@ -275,16 +190,7 @@ export default {
                     label: "Usuario",
                     sortable: true,
                 },
-                { key: "full_name", label: "Nombre", sortable: true },
-                { key: "full_ci", label: "C.I.", sortable: true },
-                { key: "tipo", label: "Tipo Usuario", sortable: true },
-                { key: "foto", label: "Foto" },
-                {
-                    key: "fecha_registro",
-                    label: "Fecha de registro",
-                    sortable: true,
-                },
-                { key: "mas", label: "Ver mas" },
+                { key: "tipo", label: "Tipo Usuario" },
                 { key: "accion", label: "Acción" },
             ],
             loading: true,
@@ -296,16 +202,9 @@ export default {
             modal_accion: "nuevo",
             oUsuario: {
                 id: 0,
-                nombre: "",
-                paterno: "",
-                materno: "",
-                ci: "",
-                ci_exp: "",
-                dir: "",
-                correo: "",
-                fono: [],
+                usuario: "",
+                password: "",
                 tipo: "",
-                foto: null,
             },
             currentPage: 1,
             perPage: 5,
@@ -329,14 +228,7 @@ export default {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
             this.oUsuario.id = item.id;
-            this.oUsuario.nombre = item.nombre ? item.nombre : "";
-            this.oUsuario.paterno = item.paterno ? item.paterno : "";
-            this.oUsuario.materno = item.materno ? item.materno : "";
-            this.oUsuario.ci = item.ci ? item.ci : "";
-            this.oUsuario.ci_exp = item.ci_exp ? item.ci_exp : "";
-            this.oUsuario.dir = item.dir ? item.dir : "";
-            this.oUsuario.correo = item.correo ? item.correo : "";
-            this.oUsuario.fono = item.fono ? item.fono.split("; ") : "";
+            this.oUsuario.usuario = item.usuario ? item.usuario : "";
             this.oUsuario.tipo = item.tipo ? item.tipo : "";
             this.modal_accion = "edit";
             this.muestra_modal = true;
@@ -425,18 +317,8 @@ export default {
             this.currentPage = 1;
         },
         limpiaUsuario() {
-            this.oUsuario.nombre = "";
-            this.oUsuario.paterno = "";
-            this.oUsuario.materno = "";
-            this.oUsuario.ci = "";
-            this.oUsuario.ci_exp = "";
-            this.oUsuario.dir = "";
-            this.oUsuario.correo = "";
-            this.oUsuario.fono = [];
-            this.oUsuario.cargo = "";
-            this.oUsuario.unidad_id = "";
+            this.oUsuario.usuario = "";
             this.oUsuario.tipo = "";
-            this.oUsuario.foto = null;
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

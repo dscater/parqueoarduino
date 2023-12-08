@@ -2,7 +2,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row" v-if="configuracion">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -11,39 +11,35 @@
                                         font-weight: bold;
                                         text-align: center;
                                     "
-                                >
-                                    {{ configuracion.nombre_sistema }}
-                                </h2>
+                                ></h2>
                                 <h3 style="text-align: center">
-                                    ¡BIENVENID@ {{ user.full_name }}!
+                                    ¡BIENVENID@ {{ user.usuario }}!
                                 </h3>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div
-                        class="col-12 col-sm-6 col-md-3"
-                        v-for="(item, index) in listInfoBox"
-                        :key="index"
-                    >
-                        <div class="info-box">
-                            <span
-                                class="info-box-icon elevation-1"
-                                :class="item.color"
-                                ><i :class="item.icon"></i
-                            ></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">{{
-                                    item.label
-                                }}</span>
-                                <span class="info-box-number">{{
-                                    item.cantidad
-                                }}</span>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="w-100 text-center">
+                            VERIFICACIÓN DE ESPACIOS
+                        </h4>
+                    </div>
+                    <div class="col-md-4" v-for="item in listEspacios">
+                        <div
+                            class="card espacio"
+                            :class="{
+                                libre: item.estado == 'LIBRE',
+                                ocupado: item.estado == 'OCUPADO',
+                            }"
+                        >
+                            <div class="card-body">
+                                <div class="nombre">{{ item.nombre }}</div>
+                                <div class="estado">{{ item.estado }}</div>
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <!-- /.container-fluid -->
         </section>
@@ -59,12 +55,24 @@ export default {
                 fullscreen: this.fullscreenLoading,
             }),
             usuarios: 10,
-            configuracion: JSON.parse(localStorage.getItem("configuracion")),
             user: JSON.parse(localStorage.getItem("user")),
-            listInfoBox: [],
-            htmlMision: "",
-            htmlVision: "",
-            htmlObjetivos: "",
+            listEspacios: [
+                {
+                    id: 0,
+                    nombre: "ESPACIO 1",
+                    estado: "LIBRE",
+                },
+                {
+                    id: 0,
+                    nombre: "ESPACIO 2",
+                    estado: "LIBRE",
+                },
+                {
+                    id: 0,
+                    nombre: "ESPACIO 3",
+                    estado: "OCUPADO",
+                },
+            ],
         };
     },
     mounted() {
@@ -73,12 +81,35 @@ export default {
     },
     methods: {
         getInfoBox() {
-            axios.get("/admin/usuarios/getInfoBox").then((res) => {
+            axios.get(main_url + "/admin/usuarios/getInfoBox").then((res) => {
                 this.listInfoBox = res.data;
+            });
+        },
+        getEspacios() {
+            axios.get(main_url + "/admin/espacios").then((response) => {
+                this.listEspacios = response.data.espacios;
             });
         },
     },
 };
 </script>
 
-<style></style>
+<style>
+.espacio .nombre,
+.espacio .estado {
+    text-align: center;
+}
+.espacio .nombre {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.espacio.libre .estado {
+    background-color: var(--success);
+    color: white;
+}
+.espacio.ocupado {
+    color: white;
+    background-color: rgb(220, 29, 29);
+}
+</style>
