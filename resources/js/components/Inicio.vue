@@ -25,6 +25,22 @@
                             VERIFICACIÓN DE ESPACIOS
                         </h4>
                     </div>
+                    <div class="col-12 text-center mb-3">
+                        <button
+                            class="btn btn-xs btn-danger"
+                            v-if="comprobar"
+                            @click="desactivaComprobacion"
+                        >
+                            <i class="fa fa-times"></i> Dejar de comprobar
+                        </button>
+                        <button
+                            class="btn btn-xs btn-success"
+                            v-if="!comprobar"
+                            @click="activaComprobacion"
+                        >
+                            <i class="fa fa-check"></i> Comprobar
+                        </button>
+                    </div>
                     <div class="col-md-4" v-for="item in listEspacios">
                         <div
                             class="card espacio"
@@ -56,28 +72,16 @@ export default {
             }),
             usuarios: 10,
             user: JSON.parse(localStorage.getItem("user")),
-            listEspacios: [
-                {
-                    id: 0,
-                    nombre: "ESPACIO 1",
-                    estado: "LIBRE",
-                },
-                {
-                    id: 0,
-                    nombre: "ESPACIO 2",
-                    estado: "LIBRE",
-                },
-                {
-                    id: 0,
-                    nombre: "ESPACIO 3",
-                    estado: "OCUPADO",
-                },
-            ],
+            comprobar: true,
+            setIntervalComprobar: null,
+            listEspacios: [],
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getInfoBox();
+        this.getEspacios();
+        this.iniciaComprobacion();
     },
     methods: {
         getInfoBox() {
@@ -85,10 +89,23 @@ export default {
                 this.listInfoBox = res.data;
             });
         },
+        iniciaComprobacion() {
+            this.setIntervalComprobar = setInterval(() => {
+                this.getEspacios();
+            }, 1000);
+        },
         getEspacios() {
             axios.get(main_url + "/admin/espacios").then((response) => {
                 this.listEspacios = response.data.espacios;
             });
+        },
+        activaComprobacion() {
+            this.comprobar = true;
+            this.iniciaComprobacion();
+        },
+        desactivaComprobacion() {
+            this.comprobar = false;
+            clearInterval(this.setIntervalComprobar);
         },
     },
 };

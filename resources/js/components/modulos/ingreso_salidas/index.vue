@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Usuarios</h1>
+                        <h1>Ingreso y Salida de vehículos</h1>
                     </div>
                 </div>
             </div>
@@ -14,27 +14,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <button
-                                            v-if="
-                                                permisos.includes(
-                                                    'usuarios.create'
-                                                )
-                                            "
-                                            class="btn btn-primary btn-flat btn-block"
-                                            @click="
-                                                abreModal('nuevo');
-                                                limpiaUsuario();
-                                            "
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                            Nuevo
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
@@ -84,45 +63,27 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(accion)="row">
-                                                    <div
-                                                        class="row justify-content-between"
-                                                    >
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-warning"
-                                                            class="btn-flat btn-block"
-                                                            title="Editar registro"
-                                                            @click="
-                                                                editarRegistro(
-                                                                    row.item
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-edit"
-                                                            ></i>
-                                                        </b-button>
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-danger"
-                                                            class="btn-flat btn-block"
-                                                            title="Eliminar registro"
-                                                            @click="
-                                                                eliminaUsuario(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .usuario
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-trash"
-                                                            ></i>
-                                                        </b-button>
-                                                    </div>
+                                                <template
+                                                    #cell(fecha_ingreso)="row"
+                                                >
+                                                    {{
+                                                        row.item
+                                                            .fecha_ingreso_ft
+                                                    }}
+                                                </template>
+                                                <template
+                                                    #cell(fecha_salida)="row"
+                                                >
+                                                    {{
+                                                        row.item.fecha_salida_ft
+                                                    }}
+                                                </template>
+                                                <template
+                                                    #cell(tiempo)="row"
+                                                >
+                                                    {{
+                                                        row.item.tiempo_t
+                                                    }}
                                                 </template>
                                             </b-table>
                                         </b-overlay>
@@ -162,22 +123,11 @@
                 </div>
             </div>
         </section>
-        <Nuevo
-            :muestra_modal="muestra_modal"
-            :accion="modal_accion"
-            :usuario="oUsuario"
-            @close="muestra_modal = false"
-            @envioModal="getUsuarios"
-        ></Nuevo>
     </div>
 </template>
 
 <script>
-import Nuevo from "./Nuevo.vue";
 export default {
-    components: {
-        Nuevo,
-    },
     data() {
         return {
             permisos: localStorage.getItem("permisos"),
@@ -186,12 +136,25 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "usuario",
-                    label: "Usuario",
+                    key: "espacio.nombre",
+                    label: "Espacio",
                     sortable: true,
                 },
-                { key: "tipo", label: "Tipo Usuario" },
-                { key: "accion", label: "Acción" },
+                {
+                    key: "fecha_ingreso",
+                    label: "Fecha y Hora de Ingreso",
+                    sortable: true,
+                },
+                {
+                    key: "fecha_salida",
+                    label: "Fecha y Hora de Salida",
+                    sortable: true,
+                },
+                {
+                    key: "tiempo",
+                    label: "Tiempo",
+                    sortable: true,
+                },
             ],
             loading: true,
             fullscreenLoading: true,
@@ -200,9 +163,9 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oUsuario: {
+            oIngresoSalida: {
                 id: 0,
-                usuario: "",
+                ingreso_salida: "",
                 password: "",
                 tipo: "",
             },
@@ -222,23 +185,14 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getUsuarios();
+        this.getIngresoSalidas();
     },
     methods: {
-        // Seleccionar Opciones de Tabla
-        editarRegistro(item) {
-            this.oUsuario.id = item.id;
-            this.oUsuario.usuario = item.usuario ? item.usuario : "";
-            this.oUsuario.tipo = item.tipo ? item.tipo : "";
-            this.modal_accion = "edit";
-            this.muestra_modal = true;
-        },
-
-        // Listar Usuarios
-        getUsuarios() {
+        // Listar IngresoSalidas
+        getIngresoSalidas() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/usuarios";
+            let url = "/admin/ingreso_salidas";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -248,67 +202,15 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.usuarios;
+                    this.listRegistros = res.data.ingreso_salidas;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaUsuario(id, descripcion) {
-            Swal.fire({
-                title: "¿Quierés eliminar este registro?",
-                html: `<strong>${descripcion}</strong>`,
-                showCancelButton: true,
-                confirmButtonColor: "#149FDA",
-                confirmButtonText: "Si, eliminar",
-                cancelButtonText: "No, cancelar",
-                denyButtonText: `No, cancelar`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    axios
-                        .post("/admin/usuarios/" + id, {
-                            _method: "DELETE",
-                        })
-                        .then((res) => {
-                            this.getUsuarios();
-                            this.filter = "";
-                            Swal.fire({
-                                icon: "success",
-                                title: res.data.msj,
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
-                        })
-                        .catch((error) => {
-                            if (error.response) {
-                                if (error.response.status === 422) {
-                                    this.errors = error.response.data.errors;
-                                }
-                                if (
-                                    error.response.status === 420 ||
-                                    error.response.status === 419 ||
-                                    error.response.status === 401
-                                ) {
-                                    window.location = "/";
-                                }
-                                if (error.response.status === 500) {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Error",
-                                        html: error.response.data.message,
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                    });
-                                }
-                            }
-                        });
-                }
-            });
-        },
-        abreModal(tipo_accion = "nuevo", usuario = null) {
+        abreModal(tipo_accion = "nuevo", ingreso_salida = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (usuario) {
-                this.oUsuario = usuario;
+            if (ingreso_salida) {
+                this.oIngresoSalida = ingreso_salida;
             }
         },
         onFiltered(filteredItems) {
@@ -316,9 +218,9 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaUsuario() {
-            this.oUsuario.usuario = "";
-            this.oUsuario.tipo = "";
+        limpiaIngresoSalida() {
+            this.oIngresoSalida.ingreso_salida = "";
+            this.oIngresoSalida.tipo = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

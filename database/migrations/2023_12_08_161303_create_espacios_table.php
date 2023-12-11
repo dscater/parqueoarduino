@@ -16,6 +16,7 @@ class CreateEspaciosTable extends Migration
         Schema::create('espacios', function (Blueprint $table) {
             $table->id();
             $table->string("nombre", 255);
+            $table->integer("nro_espacio");
             $table->string("estado", 255);
             $table->timestamps();
         });

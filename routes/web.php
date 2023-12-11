@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CobroController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\EspacioController;
 use App\Http\Controllers\IngresoSalidaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacionController;
@@ -8,6 +10,9 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\TarifarioController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
+// RECIBE DATOS
+Route::post("registra_datos", [IngresoSalidaController::class, 'registra_datos']);
 
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
@@ -37,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         // espacios
-        Route::resource("espacios", TarifarioController::class)->only([
+        Route::resource("espacios", EspacioController::class)->only([
             "index", "store", "update", "destroy", "show"
         ]);
 
@@ -45,6 +50,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource("ingreso_salidas", IngresoSalidaController::class)->only([
             "index", "store", "update", "destroy", "show"
         ]);
+
+        // cobros
+        Route::get("cobros/verifica_cobro", [CobroController::class, 'verifica_cobro']);
+        Route::post("cobros/guarda_visto/{cobro}", [CobroController::class, 'guarda_visto']);
 
         // REPORTES
         Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);

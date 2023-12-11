@@ -18,9 +18,9 @@ class CreateIngresoSalidasTable extends Migration
             $table->unsignedBigInteger("espacio_id");
             $table->date("fecha_ingreso");
             $table->time("hora_ingreso");
-            $table->date("fecha_salida");
-            $table->time("hora_salida");
-            $table->integer("tiempo");
+            $table->date("fecha_salida")->nullable();
+            $table->time("hora_salida")->nullable();
+            $table->integer("tiempo")->nullable();
             $table->timestamps();
         });
     }
