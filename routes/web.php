@@ -56,7 +56,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post("cobros/guarda_visto/{cobro}", [CobroController::class, 'guarda_visto']);
 
         // REPORTES
-        Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);
+        Route::post('reportes/espacios_disponibles', [ReporteController::class, 'espacios_disponibles']);
+        Route::post('reportes/ingresos_salidas', [ReporteController::class, 'ingresos_salidas']);
     });
 });
 

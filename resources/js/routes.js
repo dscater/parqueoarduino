@@ -45,12 +45,22 @@ export default new Router({
 
         // Reportes
         {
-            path: "/reportes/usuarios",
-            name: "reportes.usuarios",
-            component: require("./components/modulos/reportes/usuarios.vue")
-                .default,
+            path: "/reportes/espacios_disponibles",
+            name: "reportes.espacios_disponibles",
+            component:
+                require("./components/modulos/reportes/espacios_disponibles.vue")
+                    .default,
             props: true,
         },
+        {
+            path: "/reportes/ingresos_salidas",
+            name: "reportes.ingresos_salidas",
+            component:
+                require("./components/modulos/reportes/ingresos_salidas.vue")
+                    .default,
+            props: true,
+        },
+
         // PÁGINA NO ENCONTRADA
         {
             path: "*",

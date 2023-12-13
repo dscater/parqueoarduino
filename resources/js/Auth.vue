@@ -5,9 +5,6 @@
             <div class="card border border-primary">
                 <div class="card-header text-center">
                     <img :src="logo" alt="Logo" />
-                    <router-link :to="{ name: 'login' }" class="h1 text-white"
-                        ><b v-text="empresa"></b
-                    ></router-link>
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg text-white font-weight-bold">

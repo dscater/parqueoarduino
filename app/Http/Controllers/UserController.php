@@ -28,15 +28,29 @@ class UserController extends Controller
             'tarifarios.create',
             'tarifarios.edit',
             'tarifarios.destroy',
-            
+
             'ingreso_salidas.index',
             'ingreso_salidas.create',
             'ingreso_salidas.edit',
             'ingreso_salidas.destroy',
 
-            'reportes.usuarios',
+            'reportes.espacios_disponibles',
+            "reportes.ingresos_salidas"
         ],
-        "OPERADOR" => [],
+        "OPERADOR" => [
+            'tarifarios.index',
+            'tarifarios.create',
+            'tarifarios.edit',
+            'tarifarios.destroy',
+
+            'ingreso_salidas.index',
+            'ingreso_salidas.create',
+            'ingreso_salidas.edit',
+            'ingreso_salidas.destroy',
+
+            'reportes.espacios_disponibles',
+            "reportes.ingresos_salidas"
+        ],
     ];
 
 

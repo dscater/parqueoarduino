@@ -112,28 +112,22 @@
                     </li>
                     <li
                         class="nav-header bg-navy"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="
+                            permisos.includes(
+                                'reportes.espacios_disponibles'
+                            ) || permisos.includes('reportes.ingresos_salidas')
+                        "
                     >
                         REPORTES
                     </li>
-                    <!-- <li
-                        class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
-                    >
-                        <router-link
-                            :to="{ name: 'reportes.usuarios' }"
-                            class="nav-link"
-                        >
-                            <i class="fas fa-file-pdf nav-icon"></i>
-                            <p>Lista de Usuarios</p>
-                        </router-link>
-                    </li> -->
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="
+                            permisos.includes('reportes.espacios_disponibles')
+                        "
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.espacios_disponibles' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -142,10 +136,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.ingresos_salidas')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.ingresos_salidas' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>

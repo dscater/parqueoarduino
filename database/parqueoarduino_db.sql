@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 11-12-2023 a las 17:20:50
+-- Tiempo de generación: 13-12-2023 a las 13:53:19
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -45,7 +45,9 @@ CREATE TABLE `cobros` (
 
 INSERT INTO `cobros` (`id`, `ingreso_salida_id`, `tiempo`, `costo`, `fecha`, `hora`, `visto`, `created_at`, `updated_at`) VALUES
 (1, 1, 66, 100.00, '2023-12-11', '12:19:00', 1, '2023-12-11 16:19:19', '2023-12-11 17:03:03'),
-(2, 2, 1, 20.00, '2023-12-11', '13:16:00', 1, '2023-12-11 17:16:58', '2023-12-11 17:19:27');
+(2, 2, 1, 20.00, '2023-12-11', '13:16:00', 1, '2023-12-11 17:16:58', '2023-12-11 17:19:27'),
+(3, 3, 2, 20.00, '2023-12-13', '09:42:00', 1, '2023-12-13 13:42:44', '2023-12-13 13:43:47'),
+(4, 4, 11, 50.00, '2023-12-13', '09:51:00', 1, '2023-12-13 13:51:19', '2023-12-13 13:51:21');
 
 -- --------------------------------------------------------
 
@@ -67,9 +69,9 @@ CREATE TABLE `espacios` (
 --
 
 INSERT INTO `espacios` (`id`, `nombre`, `nro_espacio`, `estado`, `created_at`, `updated_at`) VALUES
-(1, 'ESPACIO 1', 1, 'LIBRE', NULL, '2023-12-11 16:19:19'),
+(1, 'ESPACIO 1', 1, 'LIBRE', NULL, '2023-12-13 13:42:44'),
 (2, 'ESPACIO 2', 2, 'LIBRE', NULL, '2023-12-11 17:16:58'),
-(3, 'ESPACIO 3', 3, 'LIBRE', NULL, NULL);
+(3, 'ESPACIO 3', 3, 'LIBRE', NULL, '2023-12-13 13:51:19');
 
 -- --------------------------------------------------------
 
@@ -95,7 +97,9 @@ CREATE TABLE `ingreso_salidas` (
 
 INSERT INTO `ingreso_salidas` (`id`, `espacio_id`, `fecha_ingreso`, `hora_ingreso`, `fecha_salida`, `hora_salida`, `tiempo`, `created_at`, `updated_at`) VALUES
 (1, 1, '2023-12-11', '11:13:00', '2023-12-11', '12:19:00', 66, '2023-12-11 16:13:58', '2023-12-11 16:13:58'),
-(2, 2, '2023-12-11', '13:15:00', '2023-12-11', '13:16:00', 1, '2023-12-11 17:15:48', '2023-12-11 17:16:58');
+(2, 2, '2023-12-11', '13:15:00', '2023-12-11', '13:16:00', 1, '2023-12-11 17:15:48', '2023-12-11 17:16:58'),
+(3, 1, '2023-12-13', '09:40:00', '2023-12-13', '09:42:00', 2, '2023-12-13 13:40:12', '2023-12-13 13:42:44'),
+(4, 3, '2023-12-13', '09:40:00', '2023-12-13', '09:51:00', 11, '2023-12-13 13:40:54', '2023-12-13 13:51:19');
 
 -- --------------------------------------------------------
 
@@ -242,7 +246,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `cobros`
 --
 ALTER TABLE `cobros`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `espacios`
@@ -254,7 +258,7 @@ ALTER TABLE `espacios`
 -- AUTO_INCREMENT de la tabla `ingreso_salidas`
 --
 ALTER TABLE `ingreso_salidas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
