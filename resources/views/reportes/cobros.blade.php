@@ -151,7 +151,7 @@
             width: 45px;
         }
 
-        .bold{
+        .bold {
             font-weight: bold
         }
     </style>
@@ -162,14 +162,13 @@
         <div class="logo">
             <img src="{{ asset('imgs/logo.png') }}">
         </div>
-        <h4 class="texto">INGRESOS Y TIEMPO POR ESPACIOS OCUPADOS</h4>
+        <h4 class="texto">COBROS REALIZADOS</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
     </div>
     <table border="1">
         <thead class="bg-principal">
             <tr>
-                <th>FECHA Y HORA DE INGRESO</th>
-                <th>FECHA Y HORA DE SALIDA</th>
+                <th>FECHA Y HORA</th>
                 <th>ESPACIO</th>
                 <th>TIEMPO (MINUTOS)</th>
                 <th>COSTO</th>
@@ -180,21 +179,19 @@
                 $cont = 1;
                 $total = 0;
             @endphp
-            @foreach ($ingresos_salidas as $value)
+            @foreach ($cobros as $value)
                 @php
-                    $costo = $value->cobro ? $value->cobro->costo : 0;
-                    $total += $costo;
+                    $total += $value->costo;
                 @endphp
                 <tr>
-                    <td class="centreado">{{ $value->fecha_ingreso_ft }}</td>
-                    <td class="centreado">{{ $value->fecha_salida_ft }}</td>
-                    <td class="centreado">{{ $value->espacio->nombre }}</td>
-                    <td class="centreado">{{ $value->tiempo_t }}</td>
-                    <td class="centreado">{{ number_format($costo, 2, '.', ',') }}</td>
+                    <td class="centreado">{{ $value->fecha_ft }}</td>
+                    <td class="centreado">{{ $value->ingreso_salida->espacio->nombre }}</td>
+                    <td class="centreado">{{ $value->ingreso_salida->tiempo_t }}</td>
+                    <td class="centreado">{{ number_format($value->costo, 2, '.', ',') }}</td>
                 </tr>
             @endforeach
             <tr>
-                <td class="centreado bg-principal bold" colspan="4">TOTAL</td>
+                <td class="centreado bg-principal bold" colspan="3">TOTAL</td>
                 <td class="centreado bg-principal bold">{{ number_format($total, 2, '.', ',') }}</td>
             </tr>
         </tbody>

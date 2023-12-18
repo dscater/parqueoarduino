@@ -18,6 +18,13 @@ class Cobro extends Model
         "visto"
     ];
 
+    protected $appends = ["fecha_ft"];
+
+    public function getFechaFTAttribute()
+    {
+        return date("d/m/Y", strtotime($this->fecha)) . ' ' . date("H:i a", strtotime($this->hora));
+    }
+
     public function ingreso_salida()
     {
         return $this->belongsTo(IngresoSalida::class, 'ingreso_salida_id');

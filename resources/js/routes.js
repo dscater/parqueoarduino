@@ -60,6 +60,14 @@ export default new Router({
                     .default,
             props: true,
         },
+        {
+            path: "/reportes/cobros_realizados",
+            name: "reportes.cobros_realizados",
+            component:
+                require("./components/modulos/reportes/cobros_realizados.vue")
+                    .default,
+            props: true,
+        },
 
         // PÁGINA NO ENCONTRADA
         {

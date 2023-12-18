@@ -115,7 +115,9 @@
                         v-if="
                             permisos.includes(
                                 'reportes.espacios_disponibles'
-                            ) || permisos.includes('reportes.ingresos_salidas')
+                            ) ||
+                            permisos.includes('reportes.ingresos_salidas') ||
+                            permisos.includes('reportes.cobros_realizados')
                         "
                     >
                         REPORTES
@@ -144,6 +146,18 @@
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Ingresos y tiempo por espacios ocupados</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.cobros_realizados')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.cobros_realizados' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Cobros realizados</p>
                         </router-link>
                     </li>
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>

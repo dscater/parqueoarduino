@@ -35,7 +35,8 @@ class UserController extends Controller
             'ingreso_salidas.destroy',
 
             'reportes.espacios_disponibles',
-            "reportes.ingresos_salidas"
+            "reportes.ingresos_salidas",
+            "reportes.cobros_realizados"
         ],
         "OPERADOR" => [
             'tarifarios.index',
@@ -49,7 +50,8 @@ class UserController extends Controller
             'ingreso_salidas.destroy',
 
             'reportes.espacios_disponibles',
-            "reportes.ingresos_salidas"
+            "reportes.ingresos_salidas",
+            "reportes.cobros_realizados"
         ],
     ];
 

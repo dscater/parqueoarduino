@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 // RECIBE DATOS
 Route::post("registra_datos", [IngresoSalidaController::class, 'registra_datos']);
 
+// VACIAR CACHE
+Route::get('/cache_clear', function () {
+    Artisan::call("route:clear");
+    Artisan::call("route:cache");
+    Artisan::call("view:clear");
+    Artisan::call("config:cache");
+    Artisan::call("optimize");
+
+    return 'Cache borrada correctamente<br/><a href="' . url("/") . '">Volver al inicio<a>';
+});
+
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -58,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         // REPORTES
         Route::post('reportes/espacios_disponibles', [ReporteController::class, 'espacios_disponibles']);
         Route::post('reportes/ingresos_salidas', [ReporteController::class, 'ingresos_salidas']);
+        Route::post('reportes/cobros_realizados', [ReporteController::class, 'cobros_realizados']);
     });
 });
 
