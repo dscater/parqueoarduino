@@ -169,6 +169,7 @@
         <thead class="bg-principal">
             <tr>
                 <th>FECHA Y HORA</th>
+                <th>PISO</th>
                 <th>ESPACIO</th>
                 <th>TIEMPO (MINUTOS)</th>
                 <th>COSTO</th>
@@ -185,13 +186,14 @@
                 @endphp
                 <tr>
                     <td class="centreado">{{ $value->fecha_ft }}</td>
+                    <td class="centreado">{{ $value->ingreso_salida->espacio->piso->nombre }}</td>
                     <td class="centreado">{{ $value->ingreso_salida->espacio->nombre }}</td>
                     <td class="centreado">{{ $value->ingreso_salida->tiempo_t }}</td>
                     <td class="centreado">{{ number_format($value->costo, 2, '.', ',') }}</td>
                 </tr>
             @endforeach
             <tr>
-                <td class="centreado bg-principal bold" colspan="3">TOTAL</td>
+                <td class="centreado bg-principal bold" colspan="4">TOTAL</td>
                 <td class="centreado bg-principal bold">{{ number_format($total, 2, '.', ',') }}</td>
             </tr>
         </tbody>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEspaciosTable extends Migration
+class CreatePisosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateEspaciosTable extends Migration
      */
     public function up()
     {
-        Schema::create('espacios', function (Blueprint $table) {
+        Schema::create('pisos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("piso_id");
             $table->string("nombre", 255);
-            $table->integer("nro_espacio");
-            $table->string("estado", 255);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateEspaciosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('espacios');
+        Schema::dropIfExists('pisos');
     }
 }

@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Espacio extends Model
+class Piso extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        "piso_id",
-        "nombre",
-        "nro_espacio",
-        "estado",
+        "nombre"
     ];
 
-    public function piso()
+    public function espacios()
     {
-        return $this->belongsTo(Piso::class, 'piso_id');
+        return $this->hasMany(Espacio::class, 'piso_id');
     }
 }

@@ -164,6 +164,7 @@
     <table border="1">
         <thead class="green">
             <tr>
+                <th>PISO</th>
                 <th>ESPACIO</th>
                 <th>ESTADO</th>
             </tr>
@@ -174,6 +175,7 @@
             @endphp
             @foreach ($espacios as $value)
                 <tr>
+                    <td class="centreado">{{ $value->piso->nombre }}</td>
                     <td class="centreado">{{ $value->nombre }}</td>
                     <td class="centreado">{{ $value->estado }}</td>
                 </tr>

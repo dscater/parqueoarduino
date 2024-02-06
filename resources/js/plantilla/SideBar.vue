@@ -70,6 +70,34 @@
                     </li>
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('espacios.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'espacios.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Espacios</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('pisos.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'pisos.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Pisos</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="permisos.includes('usuarios.index')"
                     >
                         <router-link

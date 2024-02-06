@@ -29,6 +29,16 @@ class UserController extends Controller
             'tarifarios.edit',
             'tarifarios.destroy',
 
+            'pisos.index',
+            'pisos.create',
+            'pisos.edit',
+            'pisos.destroy',
+
+            'espacios.index',
+            'espacios.create',
+            'espacios.edit',
+            'espacios.destroy',
+
             'ingreso_salidas.index',
             'ingreso_salidas.create',
             'ingreso_salidas.edit',

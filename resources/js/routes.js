@@ -27,6 +27,22 @@ export default new Router({
                 .default,
         },
 
+        // pisos
+        {
+            path: "/pisos",
+            name: "pisos.index",
+            component: require("./components/modulos/pisos/index.vue")
+                .default,
+        },
+
+        // espacios
+        {
+            path: "/espacios",
+            name: "espacios.index",
+            component: require("./components/modulos/espacios/index.vue")
+                .default,
+        },
+
         // tarifarios
         {
             path: "/tarifarios",

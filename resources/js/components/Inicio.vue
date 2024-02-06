@@ -50,6 +50,7 @@
                             }"
                         >
                             <div class="card-body">
+                                <div class="piso">{{ item.piso.nombre }}</div>
                                 <div class="nombre">{{ item.nombre }}</div>
                                 <div class="estado">{{ item.estado }}</div>
                             </div>
@@ -112,6 +113,16 @@ export default {
 </script>
 
 <style>
+.espacio .piso {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: var(--principal);
+    padding: 8px;
+    color:white;
+    font-weight: bold;
+    border-bottom-right-radius: 10px;
+}
 .espacio .nombre,
 .espacio .estado {
     text-align: center;

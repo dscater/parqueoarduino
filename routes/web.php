@@ -6,6 +6,7 @@ use App\Http\Controllers\EspacioController;
 use App\Http\Controllers\IngresoSalidaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\PisoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\TarifarioController;
 use App\Http\Controllers\UserController;
@@ -54,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
 
         // espacios
         Route::resource("espacios", EspacioController::class)->only([
+            "index", "store", "update", "destroy", "show"
+        ]);
+
+        // pisos
+        Route::resource("pisos", PisoController::class)->only([
             "index", "store", "update", "destroy", "show"
         ]);
 

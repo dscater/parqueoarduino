@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-12-2023 a las 13:53:19
+-- Tiempo de generación: 06-02-2024 a las 22:15:17
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -47,7 +47,8 @@ INSERT INTO `cobros` (`id`, `ingreso_salida_id`, `tiempo`, `costo`, `fecha`, `ho
 (1, 1, 66, 100.00, '2023-12-11', '12:19:00', 1, '2023-12-11 16:19:19', '2023-12-11 17:03:03'),
 (2, 2, 1, 20.00, '2023-12-11', '13:16:00', 1, '2023-12-11 17:16:58', '2023-12-11 17:19:27'),
 (3, 3, 2, 20.00, '2023-12-13', '09:42:00', 1, '2023-12-13 13:42:44', '2023-12-13 13:43:47'),
-(4, 4, 11, 50.00, '2023-12-13', '09:51:00', 1, '2023-12-13 13:51:19', '2023-12-13 13:51:21');
+(4, 4, 11, 50.00, '2023-12-13', '09:51:00', 1, '2023-12-13 13:51:19', '2023-12-13 13:51:21'),
+(5, 5, 1, 20.00, '2023-12-20', '19:40:00', 1, '2023-12-20 23:40:46', '2023-12-20 23:40:50');
 
 -- --------------------------------------------------------
 
@@ -57,9 +58,10 @@ INSERT INTO `cobros` (`id`, `ingreso_salida_id`, `tiempo`, `costo`, `fecha`, `ho
 
 CREATE TABLE `espacios` (
   `id` bigint UNSIGNED NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `piso_id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nro_espacio` int NOT NULL,
-  `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -68,10 +70,13 @@ CREATE TABLE `espacios` (
 -- Volcado de datos para la tabla `espacios`
 --
 
-INSERT INTO `espacios` (`id`, `nombre`, `nro_espacio`, `estado`, `created_at`, `updated_at`) VALUES
-(1, 'ESPACIO 1', 1, 'LIBRE', NULL, '2023-12-13 13:42:44'),
-(2, 'ESPACIO 2', 2, 'LIBRE', NULL, '2023-12-11 17:16:58'),
-(3, 'ESPACIO 3', 3, 'LIBRE', NULL, '2023-12-13 13:51:19');
+INSERT INTO `espacios` (`id`, `piso_id`, `nombre`, `nro_espacio`, `estado`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ESPACIO A', 1, 'LIBRE', NULL, '2023-12-13 13:42:44'),
+(2, 1, 'ESPACIO 2', 2, 'LIBRE', NULL, '2023-12-11 17:16:58'),
+(3, 1, 'ESPACIO 3', 3, 'LIBRE', NULL, '2023-12-13 13:51:19'),
+(4, 1, 'ESPACIO 4', 4, 'LIBRE', NULL, '2023-12-20 23:40:46'),
+(5, 2, 'ESPACIO 5', 5, 'OCUPADO', NULL, '2024-02-06 21:53:48'),
+(6, 2, 'ESPACIO #6', 6, 'LIBRE', '2024-02-06 21:56:03', '2024-02-06 21:56:03');
 
 -- --------------------------------------------------------
 
@@ -99,7 +104,9 @@ INSERT INTO `ingreso_salidas` (`id`, `espacio_id`, `fecha_ingreso`, `hora_ingres
 (1, 1, '2023-12-11', '11:13:00', '2023-12-11', '12:19:00', 66, '2023-12-11 16:13:58', '2023-12-11 16:13:58'),
 (2, 2, '2023-12-11', '13:15:00', '2023-12-11', '13:16:00', 1, '2023-12-11 17:15:48', '2023-12-11 17:16:58'),
 (3, 1, '2023-12-13', '09:40:00', '2023-12-13', '09:42:00', 2, '2023-12-13 13:40:12', '2023-12-13 13:42:44'),
-(4, 3, '2023-12-13', '09:40:00', '2023-12-13', '09:51:00', 11, '2023-12-13 13:40:54', '2023-12-13 13:51:19');
+(4, 3, '2023-12-13', '09:40:00', '2023-12-13', '09:51:00', 11, '2023-12-13 13:40:54', '2023-12-13 13:51:19'),
+(5, 4, '2023-12-20', '19:39:00', '2023-12-20', '19:40:00', 1, '2023-12-20 23:39:40', '2023-12-20 23:40:46'),
+(6, 5, '2023-12-20', '19:40:00', NULL, NULL, NULL, '2023-12-20 23:40:28', '2023-12-20 23:40:28');
 
 -- --------------------------------------------------------
 
@@ -109,7 +116,7 @@ INSERT INTO `ingreso_salidas` (`id`, `espacio_id`, `fecha_ingreso`, `hora_ingres
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -123,7 +130,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2023_12_08_161303_create_espacios_table', 2),
 (4, '2023_12_08_161304_create_tarifarios_table', 2),
 (5, '2023_12_08_161401_create_ingreso_salidas_table', 2),
-(6, '2023_12_11_115400_create_cobros_table', 3);
+(6, '2023_12_11_115400_create_cobros_table', 3),
+(7, '2023_12_08_161300_create_pisos_table', 4);
 
 -- --------------------------------------------------------
 
@@ -133,15 +141,36 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pisos`
+--
+
+CREATE TABLE `pisos` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `pisos`
+--
+
+INSERT INTO `pisos` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'PISO #1', '2024-02-06 21:45:56', '2024-02-06 21:45:56'),
+(2, 'PISO #2', '2024-02-06 21:53:42', '2024-02-06 21:53:42');
 
 -- --------------------------------------------------------
 
@@ -174,9 +203,9 @@ INSERT INTO `tarifarios` (`id`, `tiempo`, `costo`, `created_at`, `updated_at`) V
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `usuario` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usuario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipo` enum('ADMINISTRADOR','OPERADOR') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -226,6 +255,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indices de la tabla `pisos`
+--
+ALTER TABLE `pisos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `tarifarios`
 --
 ALTER TABLE `tarifarios`
@@ -246,31 +281,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `cobros`
 --
 ALTER TABLE `cobros`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `espacios`
 --
 ALTER TABLE `espacios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_salidas`
 --
 ALTER TABLE `ingreso_salidas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pisos`
+--
+ALTER TABLE `pisos`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tarifarios`

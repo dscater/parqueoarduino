@@ -16,7 +16,31 @@ class ReporteController extends Controller
     public function espacios_disponibles(Request $request)
     {
         $filtro =  $request->filtro;
-        $espacios = Espacio::all();
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+        $fecha_ini_aux = $fecha_ini;
+
+
+        $array_datos = [];
+
+        // $espacios = Espacio::all();
+
+        // while ($fecha_ini_aux <= $fecha_fin) {
+        //     foreach($espacioas as $e){
+        //         $ingresos_salidas = IngresoSalida::where()->get();
+        //     }
+
+        //     $fecha_ini_aux = date("Y-m-d", strtotime($fecha_ini_aux . +"+1days"));
+        // }
+
+        $fecha_ini = $fecha_ini . " 00:00:00";
+        $fecha_fin = $fecha_fin . " 23:59:59";
+
+        $espacios = Espacio::select("espacios.*")
+            ->join("pisos", "pisos.id", "=", "espacios.piso_id")
+            ->whereBetween("espacios.updated_at", [$fecha_ini, $fecha_fin])
+            ->orderBY("pisos.nombre", "asc")->get();
+        
         $pdf = PDF::loadView('reportes.espacios_disponibles', compact('espacios'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
@@ -32,7 +56,16 @@ class ReporteController extends Controller
     public function ingresos_salidas(Request $request)
     {
         $filtro =  $request->filtro;
-        $ingresos_salidas = IngresoSalida::orderBy("created_at", "asc")->get();
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+
+        $ingresos_salidas = [];
+        if ($fecha_ini && $fecha_fin) {
+            $ingresos_salidas = IngresoSalida::whereBetween("fecha_ingreso", [$fecha_ini, $fecha_fin])->orderBy("created_at", "asc")->get();
+        } else {
+            $ingresos_salidas = IngresoSalida::orderBy("created_at", "asc")->get();
+        }
+
         $pdf = PDF::loadView('reportes.ingresos_salidas', compact('ingresos_salidas'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
