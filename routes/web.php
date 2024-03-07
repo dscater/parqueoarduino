@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         // pisos
+        Route::get("pisos/conEspacios", [PisoController::class, 'conEspacios']);
         Route::resource("pisos", PisoController::class)->only([
             "index", "store", "update", "destroy", "show"
         ]);

@@ -23,6 +23,12 @@ class PisoController extends Controller
         return response()->JSON(['pisos' => $pisos, 'total' => count($pisos)], 200);
     }
 
+    public function conEspacios()
+    {
+        $pisos = Piso::with(["espacios"])->get();
+        return response()->JSON(['pisos' => $pisos, 'total' => count($pisos)], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);

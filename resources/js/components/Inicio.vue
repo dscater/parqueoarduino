@@ -41,18 +41,39 @@
                             <i class="fa fa-check"></i> Comprobar
                         </button>
                     </div>
-                    <div class="col-md-4" v-for="item in listEspacios">
-                        <div
-                            class="card espacio"
-                            :class="{
-                                libre: item.estado == 'LIBRE',
-                                ocupado: item.estado == 'OCUPADO',
-                            }"
-                        >
+                    <div class="col-12" v-for="piso in listPisos">
+                        <div class="card">
+                            <div class="card-header bg-primary">
+                                <h4>{{ piso.nombre }}</h4>
+                            </div>
                             <div class="card-body">
-                                <div class="piso">{{ item.piso.nombre }}</div>
-                                <div class="nombre">{{ item.nombre }}</div>
-                                <div class="estado">{{ item.estado }}</div>
+                                <div class="row">
+                                    <div
+                                        class="col-md-4"
+                                        v-for="item in piso.espacios"
+                                    >
+                                        <div
+                                            class="card espacio"
+                                            :class="{
+                                                libre: item.estado == 'LIBRE',
+                                                ocupado:
+                                                    item.estado == 'OCUPADO',
+                                            }"
+                                        >
+                                            <div class="card-body">
+                                                <!-- <div class="piso">
+                                                    {{ piso.nombre }}
+                                                </div> -->
+                                                <div class="nombre">
+                                                    {{ item.nombre }}
+                                                </div>
+                                                <div class="estado">
+                                                    {{ item.estado }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,7 +96,7 @@ export default {
             user: JSON.parse(localStorage.getItem("user")),
             comprobar: true,
             setIntervalComprobar: null,
-            listEspacios: [],
+            listPisos: [],
         };
     },
     mounted() {
@@ -96,9 +117,11 @@ export default {
             }, 1000);
         },
         getEspacios() {
-            axios.get(main_url + "/admin/espacios").then((response) => {
-                this.listEspacios = response.data.espacios;
-            });
+            axios
+                .get(main_url + "/admin/pisos/conEspacios")
+                .then((response) => {
+                    this.listPisos = response.data.pisos;
+                });
         },
         activaComprobacion() {
             this.comprobar = true;
@@ -119,7 +142,7 @@ export default {
     top: 0;
     background-color: var(--principal);
     padding: 8px;
-    color:white;
+    color: white;
     font-weight: bold;
     border-bottom-right-radius: 10px;
 }
